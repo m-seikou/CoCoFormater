@@ -2,7 +2,14 @@
 
 class Writer
 {
-    public static function header(): string
+    public function __construct(
+        private readonly array $excludeTabs,
+        private readonly array $excludeNames
+    )
+    {
+    }
+
+    public function header(): string
     {
         return <<<EOL
         <!DOCTYPE html>
@@ -17,7 +24,7 @@ class Writer
         EOL;
     }
 
-    public static function bodyHead(): string
+    public function bodyHead(): string
     {
         return <<<EOL
           <body>
@@ -37,7 +44,7 @@ class Writer
         EOL;
     }
 
-    public static function bodyTail(): string
+    public function bodyTail(): string
     {
         return <<<EOL
             </table>
@@ -47,7 +54,7 @@ class Writer
         EOL;
     }
 
-    public static function tableHeader(CoCoForliaLog $log): string
+    public function tableHeader(CoCoForliaLog $log): string
     {
         $result = <<<EOL
               <thead>
@@ -55,6 +62,9 @@ class Writer
         
         EOL;
         foreach ($log->getTabs() as $tab) {
+            if (in_array($tab, $this->excludeTabs)) {
+                continue;
+            }
             $result .= <<<EOL
                       <th>$tab</th>
 
@@ -68,13 +78,19 @@ class Writer
         return $result;
     }
 
-    public static function tableBody(CoCoForliaLog $log): string
+    public function tableBody(CoCoForliaLog $log): string
     {
         $result = <<<EOL
               <tbody>
         
         EOL;
         foreach ($log->getPosts() as $post) {
+            if (in_array($post->tab, $this->excludeTabs)) {
+                continue;
+            }
+            if (in_array($post->name, $this->excludeNames)) {
+                continue;
+            }
             $result .= <<<EOL
                     <tr>
 

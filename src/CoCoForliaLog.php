@@ -15,9 +15,6 @@ class CoCoForliaLog
         foreach($log->body->p as $p){
             $post =  new post($p);
             $this->posts[] =$post;
-            if($post->tab == '[情報]'){
-                continue;
-            }
             $this->users[$post->name] = $post->color;
             $this->tabs[$post->tab] = $post->tab;
         }
