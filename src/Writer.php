@@ -3,10 +3,12 @@
 class Writer
 {
     public function __construct(
-        private readonly array $excludeTabs,
-        private readonly array $excludeNames
+        private array $excludeTabs,
+        private array $excludeNames
     )
     {
+        $this->excludeTabs = array_map(function($a){return '['.$a.']';},$excludeTabs);
+        $this->excludeNames = array_map(function($a){return '['.$a.']';},$excludeNames);
     }
 
     public function header(): string

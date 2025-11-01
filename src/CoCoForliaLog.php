@@ -22,7 +22,9 @@ class CoCoForliaLog
 
     public function getUsers(): array
     {
-        return $this->users;
+        $tmp = array_unique(array_keys($this->users));
+        sort($tmp);
+        return $tmp;
     }
 
     /**
